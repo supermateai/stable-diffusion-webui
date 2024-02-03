@@ -30,7 +30,7 @@ RUN apt-get install -y \
     python3-opencv \
     python3.10-venv \
     google-perftools \
-    sudo \
+    sudo
 
 RUN apt -y autoremove && apt autoclean && \
     rm -rf /var/lib/apt/lists/* && \
