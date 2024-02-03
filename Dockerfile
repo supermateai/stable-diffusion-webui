@@ -62,7 +62,6 @@ EXPOSE 8080
 
 ENTRYPOINT ["/app/entrypoint.sh", "--update-check", "--xformers", "--listen", "--port", "8080"]
 
-
 FROM minimal as full
 
 RUN cd /app/stable-diffusion-webui && \
