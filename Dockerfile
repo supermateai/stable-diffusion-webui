@@ -1,7 +1,7 @@
 FROM ubuntu:22.04 as minimal
 
-ENV TZ=Asia/Shanghai \
-    DEBIAN_FRONTEND=noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Shanghai
 
 COPY entrypoint.sh /app/entrypoint.sh
 
