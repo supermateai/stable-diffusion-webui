@@ -5,8 +5,6 @@ ENV TZ=Asia/Shanghai
 
 COPY entrypoint.sh /app/entrypoint.sh
 
-RUN apt update
-
 # Install AUTOMATIC1111 pre-requisites
 RUN apt update && \
     apt install -y \
