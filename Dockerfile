@@ -10,11 +10,11 @@ RUN apt update
 # Install AUTOMATIC1111 pre-requisites
 RUN apt update && \
     apt install -y \
+    apt-utils \
     cmake \
     rustc \
     git-all \
     wget \
-    apt-utils \
     jq
 
 RUN apt -y autoremove && apt autoclean
