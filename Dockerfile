@@ -1,35 +1,38 @@
 FROM ubuntu:22.04 as minimal
 
+ENV TZ=Asia/Shanghai \
+    DEBIAN_FRONTEND=noninteractive
+
 COPY entrypoint.sh /app/entrypoint.sh
 
+RUN apt update
+
+# Install AUTOMATIC1111 pre-requisites
 RUN apt update && \
     apt install -y \
-        cmake \
-        rustc \
-        git-all \
-        wget \
-        jq \
-        software-properties-common \
-        python3 \
-        python3-pip \
-        python3-venv \
-        python3-ipykernel \
-        libopencv-dev \
-        python3-opencv \
-        python3.10-venv \
-        google-perftools \
-        git \
-        wget \
-        libgl1-mesa-dev \
-        libglib2.0-0 \
-        libsm6 \
-        libxrender1 \
-        libxext6 \
-        libgoogle-perftools4 \
-        libtcmalloc-minimal4 \
-        libcusparse11 \
-        xdg-utils && \
-    apt -y autoremove && apt autoclean && \
+    cmake \
+    rustc \
+    git-all \
+    wget \
+    apt-utils \
+    jq
+
+RUN apt -y autoremove && apt autoclean
+
+# Install Python pre-requisites, including Python 3.x
+# Google perftools includes TCMalloc, which helps with CPU memory usage
+RUN apt-get install -y \
+    software-properties-common \
+    python3 \
+    python3-pip \
+    python3-ipykernel \
+    libopencv-dev \
+    python3-opencv \
+    python3.10-venv \
+    google-perftools \
+    sudo \
+
+RUN apt -y autoremove && apt autoclean && \
     rm -rf /var/lib/apt/lists/* && \
     groupadd -g 1000 sdgroup && \
     useradd -m -s /bin/bash -u 1000 -g 1000 --home /app sduser && \
@@ -55,7 +58,7 @@ VOLUME /app/stable-diffusion-webui/localizations
 
 EXPOSE 8080
 
-ENV PYTORCH_CUDA_ALLOC_CONF=garbage_collection_threshold:0.9,max_split_size_mb:512
+#ENV PYTORCH_CUDA_ALLOC_CONF=garbage_collection_threshold:0.9,max_split_size_mb:512
 
 ENTRYPOINT ["/app/entrypoint.sh", "--update-check", "--xformers", "--listen", "--port", "8080"]
 
